@@ -1,0 +1,19 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HasText = void 0;
+const Result_1 = require("./Result");
+const react_1 = __importDefault(require("react"));
+function HasText({ text, element, cursor, position, moveCursor, }) {
+    const props = {};
+    if (text instanceof RegExp) {
+        props.toMatch = text;
+    }
+    else {
+        props.toEqual = text;
+    }
+    return (react_1.default.createElement(Result_1.Result, Object.assign({ label: `HAS TEXT ${text}`, expect: () => element.innerText }, props, { cursor: cursor, position: position, moveCursor: moveCursor })));
+}
+exports.HasText = HasText;

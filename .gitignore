@@ -1,5 +1,5 @@
 /node_modules
-*.js
+# *.js
 !jest.config.js
 !babel.config.js
-*.d.ts
+# *.d.ts
