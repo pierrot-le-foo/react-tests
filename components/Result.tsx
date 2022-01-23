@@ -19,7 +19,7 @@ export function Result({
   position,
   moveCursor,
 }: ResultProps) {
-  const [valid, setValid] = useState(null);
+  const [valid, setValid] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (cursor === position) {

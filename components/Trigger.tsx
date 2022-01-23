@@ -23,12 +23,12 @@ export function Trigger({
   parent = '',
   label,
 }: TriggerProps) {
-  const [valid, setValid] = useState(null);
+  const [valid, setValid] = useState<boolean | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [retries, setRetries] = useState(0);
 
   const letters = eventName.split("");
-  const first = letters.shift();
+  const first = letters.shift() as string;
 
   const triggerName = `on${first.toUpperCase()}${letters.join("")}`;
 
@@ -42,8 +42,8 @@ export function Trigger({
         ? document.querySelector(parent.concat(' ', selector))
         : element.querySelector(selector);
       if (elem) {
-        const elemProps = elem[Object.keys(elem)[1]];
-        if (typeof elemProps[triggerName] === "function") {
+        const elemProps = elem[Object.keys(elem)[1] as keyof typeof elem] as Record<string, any>;
+        if (typeof elemProps[triggerName as keyof typeof elemProps] === "function") {
           elemProps[triggerName](event);
           setValid(true);
           setTimeout(moveCursor, 350);
@@ -55,8 +55,8 @@ export function Trigger({
         retry();
       }
     } else {
-      const elemProps = element[Object.keys(element)[1]];
-      if (typeof elemProps[triggerName] === "function") {
+      const elemProps = element[Object.keys(element)[1] as keyof typeof element] as Record<string, any>;
+      if (typeof elemProps[triggerName as keyof typeof elemProps] === "function") {
         elemProps[triggerName](event);
         setValid(true);
         setTimeout(moveCursor, 350);
@@ -83,7 +83,7 @@ export function Trigger({
       const fn = setTimeout(change, 100);
       return () => clearTimeout(fn);
     } else if (retries >= 100) {
-      console.log(element, document.querySelector(selector));
+      // console.log(element, document.querySelector(selector as string));
     }
   }, [valid, retries, cursor, position]);
 

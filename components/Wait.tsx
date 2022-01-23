@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-export function Wait({ milliseconds, cursor, position, moveCursor }) {
-  const [waited, setWaited] = useState(null);
+interface WaitProps {
+  milliseconds: number
+  cursor: number
+  position: number
+  moveCursor(): void
+}
+
+export function Wait({ milliseconds, cursor, position, moveCursor }: WaitProps) {
+  const [waited, setWaited] = useState<null | boolean>(null);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {

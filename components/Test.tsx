@@ -17,7 +17,7 @@ interface TestProps {
   props?: Record<string, any>;
   label?: string;
   tests: any[];
-  autoStart?: boolean
+  autoStart?: boolean;
 }
 
 export default function Test({
@@ -25,7 +25,7 @@ export default function Test({
   Component,
   props = {},
   label = "",
-  autoStart = false
+  autoStart = false,
 }: TestProps) {
   const [ready, setReady] = useState(false);
   const [element, setElement] = useState();
@@ -47,7 +47,7 @@ export default function Test({
         nextTest
       );
     } else {
-      console.log('TEST DONE')
+      console.log("TEST DONE");
       setDone(true);
     }
   }, [cursor]);
@@ -60,7 +60,7 @@ export default function Test({
     setReady(Boolean(ref.current.firstChild));
     setElement(ref.current.firstChild);
     if (autoStart) {
-      setCursor(0)
+      setCursor(0);
     }
   }, [ref]);
 
@@ -129,7 +129,17 @@ export default function Test({
 
 Test.hasType =
   (type: string) =>
-  ({ element, cursor, position, moveCursor }) =>
+  ({
+    element,
+    cursor,
+    position,
+    moveCursor,
+  }: {
+    element: HTMLElement;
+    cursor: number;
+    position: number;
+    moveCursor(): void;
+  }) =>
     (
       <HasType
         type={type}
@@ -142,7 +152,17 @@ Test.hasType =
 
 Test.hasText =
   (text: string | RegExp) =>
-  ({ element, cursor, position, moveCursor }) =>
+  ({
+    element,
+    cursor,
+    position,
+    moveCursor,
+  }: {
+    element: HTMLElement;
+    cursor: number;
+    position: number;
+    moveCursor(): void;
+  }) =>
     (
       <HasText
         text={text}
@@ -155,13 +175,23 @@ Test.hasText =
 
 Test.click =
   (
-    selector = '',
+    selector = "",
     { parent = "", label = "" } = {
       parent: "",
       label: "",
     }
   ) =>
-  ({ element, cursor, position, moveCursor }) =>
+  ({
+    element,
+    cursor,
+    position,
+    moveCursor,
+  }: {
+    element: HTMLElement;
+    cursor: number;
+    position: number;
+    moveCursor(): void;
+  }) =>
     (
       <Click
         selector={selector}
@@ -175,8 +205,16 @@ Test.click =
     );
 
 Test.wait =
-  (milliseconds) =>
-  ({ cursor, position, moveCursor }) =>
+  (milliseconds: number) =>
+  ({
+    cursor,
+    position,
+    moveCursor,
+  }: {
+    cursor: number;
+    position: number;
+    moveCursor(): void;
+  }) =>
     (
       <Wait
         milliseconds={milliseconds}
@@ -191,9 +229,19 @@ Test.trigger =
     eventName: string,
     event: SyntheticEvent,
     selector?: string,
-    { parent = '', label = "" } = { parent: '', label: "" }
+    { parent = "", label = "" } = { parent: "", label: "" }
   ) =>
-  ({ element, cursor, position, moveCursor }) =>
+  ({
+    element,
+    cursor,
+    position,
+    moveCursor,
+  }: {
+    element: HTMLElement;
+    cursor: number;
+    position: number;
+    moveCursor(): void;
+  }) =>
     (
       <Trigger
         event={event}
@@ -211,8 +259,18 @@ Test.trigger =
 Test.select = (selector = "") => {
   return {
     hasText(text = "") {
-      return ({ element, cursor, position, moveCursor }) => {
-        const elem = element.querySelector(selector);
+      return ({
+        element,
+        cursor,
+        position,
+        moveCursor,
+      }: {
+        element: HTMLElement;
+        cursor: number;
+        position: number;
+        moveCursor(): void;
+      }) => {
+        const elem = element.querySelector(selector) as HTMLElement;
 
         if (!elem) {
           return <div>Not found {selector}</div>;

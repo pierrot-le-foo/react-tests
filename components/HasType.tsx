@@ -1,7 +1,15 @@
 import { Result } from "./Result";
 import React from "react";
 
-export function HasType({ type, element, cursor, position, moveCursor }) {
+interface HasTypeProps {
+  type: string
+  element: HTMLElement
+  cursor: number
+  position: number
+  moveCursor(): void
+}
+
+export function HasType({ type, element, cursor, position, moveCursor }: HasTypeProps) {
   return (
     <Result
       label={`HAS TYPE ${type}`}
