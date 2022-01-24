@@ -81,6 +81,7 @@ export default function Test({
     setReady(Boolean(ref.current.firstChild));
     setElement(ref.current.firstChild);
     if (autoStart) {
+      console.log('GO')
       setCursor(0);
     }
   }, [ref]);
@@ -88,7 +89,7 @@ export default function Test({
   const [mounted] = useState(<Component {...props} />);
 
   useEffect(() => {
-    console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold");
+    console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold", {autoStart});
   }, []);
 
   return (

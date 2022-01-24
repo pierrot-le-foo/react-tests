@@ -24,7 +24,11 @@ export default function TestWelcome({ autoStart = false }) {
   return (
     <Test
       autoStart={autoStart}
-      Component={Welcome}
+      Component={() => (
+        <main>
+          <Welcome />
+        </main>
+      )}
       tests={[
         Test.trigger(
           "change",
@@ -37,7 +41,7 @@ export default function TestWelcome({ autoStart = false }) {
           { target: "select" }
         ),
 
-        // Test.select("div").hasText("Bonjour"),
+        Test.hasText("Bonjour", { target: "div" }),
       ]}
     />
   );

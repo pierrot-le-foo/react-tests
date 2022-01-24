@@ -5,6 +5,5 @@ import TestWelcome from "../examples/events";
 
 test("Welcome", async () => {
   render(<TestWelcome autoStart />);
-  // await new Promise(resolve => setTimeout(resolve, 2000))
   await waitFor(() => screen.findAllByTestId("react-tests-done"));
 });

@@ -34,14 +34,15 @@ function Welcome() {
         language === "spanish" && react_1.default.createElement("div", null, "Spanish")));
 }
 function TestWelcome({ autoStart = false }) {
-    return (react_1.default.createElement(Test_1.default, { autoStart: autoStart, Component: Welcome, tests: [
+    return (react_1.default.createElement(Test_1.default, { autoStart: autoStart, Component: () => (react_1.default.createElement("main", null,
+            react_1.default.createElement(Welcome, null))), tests: [
             Test_1.default.trigger("change", {
                 target: {
                     // @ts-ignore
                     value: "french",
                 },
             }, { target: "select" }),
-            // Test.select("div").hasText("Bonjour"),
+            Test_1.default.hasText("Bonjour", { target: "div" }),
         ] }));
 }
 exports.default = TestWelcome;

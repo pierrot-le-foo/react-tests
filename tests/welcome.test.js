@@ -18,6 +18,5 @@ const react_2 = __importDefault(require("react"));
 const events_1 = __importDefault(require("../examples/events"));
 test("Welcome", () => __awaiter(void 0, void 0, void 0, function* () {
     (0, react_1.render)(react_2.default.createElement(events_1.default, { autoStart: true }));
-    // await new Promise(resolve => setTimeout(resolve, 2000))
     yield (0, react_1.waitFor)(() => react_1.screen.findAllByTestId("react-tests-done"));
 }));

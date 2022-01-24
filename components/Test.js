@@ -52,12 +52,13 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
         setReady(Boolean(ref.current.firstChild));
         setElement(ref.current.firstChild);
         if (autoStart) {
+            console.log('GO');
             setCursor(0);
         }
     }, [ref]);
     const [mounted] = (0, react_1.useState)(react_1.default.createElement(Component, Object.assign({}, props)));
     (0, react_1.useEffect)(() => {
-        console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold");
+        console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold", { autoStart });
     }, []);
     return (react_1.default.createElement("div", { style: {
             backgroundColor: "#333",
