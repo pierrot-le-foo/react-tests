@@ -2,19 +2,19 @@ import React, { SyntheticEvent } from "react";
 import Base from "./Base";
 import { TestItemExtraProps } from "./Test";
 
-interface ActionProps {
+interface ActionProps<Element> {
   eventName: string;
   run(element?: HTMLElement): Promise<boolean>;
   cursor: number;
   position: number;
   moveCursor(): void;
-  event: SyntheticEvent;
+  event: SyntheticEvent<Element>;
   element: HTMLElement;
   options?: TestItemExtraProps;
   delay?: number;
 }
 
-export default function Action({
+export default function Action<Element>({
   eventName,
   cursor,
   position,
@@ -24,7 +24,7 @@ export default function Action({
   moveCursor,
   options = {},
   delay = 0,
-}: ActionProps) {
+}: ActionProps<Element>) {
   return (
     <Base
       delay={delay}

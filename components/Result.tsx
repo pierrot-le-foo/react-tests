@@ -38,9 +38,6 @@ export function Result({
         </div>
       )}
       run={async (elem) => {
-        // @ts-ignore
-        console.log({ elem, toEqual, toMatch, r: expect(elem) });
-
         if (typeof toEqual !== "undefined" && elem) {
           return expect(elem) === toEqual;
         }

@@ -2,13 +2,13 @@ import React, { SyntheticEvent } from "react";
 import Action from "./Action";
 import { TestItemExtraProps } from "./Test";
 
-interface TriggerProps {
+interface TriggerProps<Element> {
   eventName: string;
   element: HTMLElement;
   cursor: number;
   position: number;
   moveCursor(): void;
-  event: SyntheticEvent;
+  event: SyntheticEvent<Element>;
   options?: TestItemExtraProps;
 }
 
@@ -20,9 +20,9 @@ export function Trigger({
   moveCursor,
   event,
   options,
-}: TriggerProps) {
+}: TriggerProps<Element>) {
   return (
-    <Action
+    <Action<Element>
       eventName={eventName}
       cursor={cursor}
       position={position}
