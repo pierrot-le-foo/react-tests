@@ -13,6 +13,7 @@ export function HasText({
   cursor,
   position,
   moveCursor,
+  options,
 }: HasTextProps) {
   const props: Partial<ResultProps> = {};
 
@@ -24,13 +25,14 @@ export function HasText({
 
   return (
     <Result
-      label={`HAS TEXT ${text}`}
-      expect={() => element.innerText}
+      expect={(elem) => elem.innerText}
       {...props}
       cursor={cursor}
       position={position}
       moveCursor={moveCursor}
       element={element}
+      options={options}
+      assertion={`has text ${text}`}
     />
   );
 }

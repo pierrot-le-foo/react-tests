@@ -5,9 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const Base_1 = __importDefault(require("./Base"));
-function Action({ eventName, cursor, position, event, element, run, moveCursor, options = {}, }) {
-    console.log('Action', { options });
-    return (react_1.default.createElement(Base_1.default, { cursor: cursor, position: position, run: run, moveCursor: moveCursor, element: element, type: "EVENT", options: options, info: ({ state, target }) => {
+function Action({ eventName, cursor, position, event, element, run, moveCursor, options = {}, delay = 0, }) {
+    return (react_1.default.createElement(Base_1.default, { delay: delay, cursor: cursor, position: position, run: run, moveCursor: moveCursor, element: element, type: "EVENT", options: options, info: ({ state, target }) => {
             let elemString;
             if (state === "iddle") {
                 if ("root" in options) {
@@ -36,7 +35,7 @@ function Action({ eventName, cursor, position, event, element, run, moveCursor, 
                     elemString = element.tagName;
                 }
             }
-            return (react_1.default.createElement(react_1.default.Fragment, null,
+            return (react_1.default.createElement("div", { style: { display: "flex", gap: 6, alignItems: "center" } },
                 react_1.default.createElement("div", null, eventName),
                 react_1.default.createElement("div", null, elemString),
                 react_1.default.createElement("div", null,

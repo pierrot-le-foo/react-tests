@@ -11,7 +11,8 @@ interface BaseProps {
   element: HTMLElement;
   options?: TestItemExtraProps;
   type: string;
-  info(props: { state: State; target?: HTMLElement }): ReactNode;
+  info?(props: { state: State; target?: HTMLElement }): ReactNode;
+  delay?: number
 }
 
 export default function Base({
@@ -23,11 +24,10 @@ export default function Base({
   moveCursor,
   type,
   info,
+  delay
 }: BaseProps) {
   const [state, setState] = useState<State>("iddle");
   const [target, setTarget] = useState<HTMLElement>();
-
-  console.log('Base', {options})
 
   useEffect(() => {
     if (cursor === position && !target) {
@@ -48,14 +48,17 @@ export default function Base({
   }, [cursor, position, options, element]);
 
   useEffect(() => {
-    console.log("!!!!!!!!!!!", state, target);
     if (state === "running" && target) {
       run(target)
         .then((res) => {
           if (res) {
             setState("ok");
-            console.log("OK");
-            moveCursor();
+
+            if (delay) {
+              setTimeout(moveCursor, delay)
+            } else {
+              moveCursor();
+            }
           } else {
             setState("failed");
           }
@@ -78,7 +81,7 @@ export default function Base({
         )}
       </div>
       <div>{type}</div>
-      <div>{info({ state, target })}</div>
+      <div>{info && info({ state, target })}</div>
     </div>
   );
 }

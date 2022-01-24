@@ -1,17 +1,18 @@
 import React from "react";
+import { printElement } from "../helpers/printElement";
 
 import Base from "./Base";
-import { TestItemProps } from "./Test";
+import { TestItemExtraProps, TestItemProps } from "./Test";
 
 export interface ResultProps extends TestItemProps {
-  label: string;
-  expect(): any;
+  expect(elem: HTMLElement): any;
   toEqual?: any;
   toMatch?: RegExp;
+  options?: TestItemExtraProps;
+  assertion: string;
 }
 
 export function Result({
-  label,
   expect,
   toEqual,
   toMatch,
@@ -19,6 +20,8 @@ export function Result({
   position,
   moveCursor,
   element,
+  options = {},
+  assertion,
 }: ResultProps) {
   return (
     <Base
@@ -26,9 +29,28 @@ export function Result({
       element={element}
       position={position}
       moveCursor={moveCursor}
+      options={options}
       type="ASSERT"
-      info={() => <div />}
-      run={async () => true}
+      info={() => (
+        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+          <div>{printElement(options.target || element)}</div>
+          <div>{assertion}</div>
+        </div>
+      )}
+      run={async (elem) => {
+        // @ts-ignore
+        console.log({ elem, toEqual, toMatch, r: expect(elem) });
+
+        if (typeof toEqual !== "undefined" && elem) {
+          return expect(elem) === toEqual;
+        }
+
+        if (toMatch instanceof RegExp && elem) {
+          return toMatch.test(expect(elem));
+        }
+
+        return false;
+      }}
     />
   );
 }

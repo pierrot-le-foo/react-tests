@@ -1,70 +1,35 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Click = void 0;
-const react_1 = __importStar(require("react"));
-function Click({ selector, element, cursor, position, moveCursor, parent = "", label, }) {
-    const [valid, setValid] = (0, react_1.useState)(null);
-    (0, react_1.useEffect)(() => {
-        if (cursor === position) {
-            console.log(`%cCLICK`, "color: orange", selector);
-            if (selector) {
-                const elem = parent
-                    ? document.querySelector(parent.concat(" ", selector))
-                    : element.querySelector(selector);
-                if (elem) {
-                    if (typeof elem.scrollIntoView === "function") {
-                        elem.scrollIntoView({
-                            behavior: "smooth",
-                            block: "end",
-                            inline: "nearest",
-                        });
-                    }
-                    elem.click();
-                    setValid(true);
-                    console.log(`%cCLICK`, "color: green", selector);
-                    setTimeout(moveCursor, 350);
-                }
-                else {
-                    setValid(false);
-                }
+const react_1 = __importDefault(require("react"));
+const Base_1 = __importDefault(require("./Base"));
+function Click({ options = {}, element, cursor, position, moveCursor, }) {
+    return (react_1.default.createElement(Base_1.default, { cursor: cursor, position: position, moveCursor: moveCursor, element: element, type: "EVENT", options: options, delay: 350, info: () => react_1.default.createElement("div", null,
+            react_1.default.createElement("div", null, "CLICK")), run: (elem) => __awaiter(this, void 0, void 0, function* () {
+            if (elem && typeof elem.scrollIntoView === "function") {
+                elem.scrollIntoView({
+                    behavior: "smooth",
+                    block: "end",
+                    inline: "nearest",
+                });
             }
-            else {
-                if (typeof element.scrollIntoView === "function") {
-                    element.scrollIntoView();
-                }
-                element.click();
-                setValid(true);
-                console.log(`%cCLICK`, "color: green", selector);
-                setTimeout(moveCursor, 350);
+            if (elem) {
+                elem.click();
+                return true;
             }
-        }
-    }, [cursor, position]);
-    let icon = "_";
-    if (typeof valid === "boolean") {
-        icon = valid ? "✅" : "❌";
-    }
-    return (react_1.default.createElement("div", null,
-        icon,
-        " ",
-        label || `CLICK ${selector}`));
+            return false;
+        }) }));
 }
 exports.Click = Click;

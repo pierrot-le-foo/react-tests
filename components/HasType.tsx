@@ -12,7 +12,7 @@ interface HasTypeProps {
 export function HasType({ type, element, cursor, position, moveCursor }: HasTypeProps) {
   return (
     <Result
-      label={`HAS TYPE ${type}`}
+      assertion={`has type ${type}`}
       expect={() => element.tagName.toLowerCase()}
       toEqual={type}
       cursor={cursor}

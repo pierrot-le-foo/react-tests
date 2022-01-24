@@ -11,6 +11,7 @@ interface ActionProps {
   event: SyntheticEvent;
   element: HTMLElement;
   options?: TestItemExtraProps;
+  delay?: number;
 }
 
 export default function Action({
@@ -22,10 +23,11 @@ export default function Action({
   run,
   moveCursor,
   options = {},
+  delay = 0,
 }: ActionProps) {
-  console.log('Action', {options})
   return (
     <Base
+      delay={delay}
       cursor={cursor}
       position={position}
       run={run}
@@ -63,13 +65,13 @@ export default function Action({
         }
 
         return (
-          <>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
             <div>{eventName}</div>
             <div>{elemString}</div>
             <div>
               <pre>{JSON.stringify(event)}</pre>
             </div>
-          </>
+          </div>
         );
       }}
     />

@@ -9,10 +9,11 @@ interface BaseProps {
     element: HTMLElement;
     options?: TestItemExtraProps;
     type: string;
-    info(props: {
+    info?(props: {
         state: State;
         target?: HTMLElement;
     }): ReactNode;
+    delay?: number;
 }
-export default function Base({ cursor, position, options, element, run, moveCursor, type, info, }: BaseProps): JSX.Element;
+export default function Base({ cursor, position, options, element, run, moveCursor, type, info, delay }: BaseProps): JSX.Element;
 export {};

@@ -9,6 +9,7 @@ interface ActionProps {
     event: SyntheticEvent;
     element: HTMLElement;
     options?: TestItemExtraProps;
+    delay?: number;
 }
-export default function Action({ eventName, cursor, position, event, element, run, moveCursor, options, }: ActionProps): JSX.Element;
+export default function Action({ eventName, cursor, position, event, element, run, moveCursor, options, delay, }: ActionProps): JSX.Element;
 export {};

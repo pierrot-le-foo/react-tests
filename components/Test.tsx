@@ -78,7 +78,6 @@ export default function Test({
   const refresh = () => setElement(ref.current.firstChild);
 
   useEffect(() => {
-    console.log(1);
     setReady(Boolean(ref.current.firstChild));
     setElement(ref.current.firstChild);
     if (autoStart) {
@@ -195,32 +194,13 @@ Test.hasText =
 
 Test.click =
   (
-    selector = "",
-    { parent = "", label = "" } = {
-      parent: "",
-      label: "",
-    }
+    extraProps?: TestItemExtraProps
   ) =>
-  ({
-    element,
-    cursor,
-    position,
-    moveCursor,
-  }: {
-    element: HTMLElement;
-    cursor: number;
-    position: number;
-    moveCursor(): void;
-  }) =>
+  (props: TestItemProps) =>
     (
       <Click
-        selector={selector}
-        element={element}
-        cursor={cursor}
-        position={position}
-        moveCursor={moveCursor}
-        parent={parent}
-        label={label}
+        {...props}
+        options={extraProps}
       />
     );
 

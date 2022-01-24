@@ -49,7 +49,6 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
     const ref = (0, react_1.useRef)();
     const refresh = () => setElement(ref.current.firstChild);
     (0, react_1.useEffect)(() => {
-        console.log(1);
         setReady(Boolean(ref.current.firstChild));
         setElement(ref.current.firstChild);
         if (autoStart) {
@@ -97,10 +96,7 @@ Test.hasType =
 Test.hasText =
     (text, extraProps) => (props) => react_1.default.createElement(HasText_1.HasText, Object.assign({ text: text }, props, { options: extraProps }));
 Test.click =
-    (selector = "", { parent = "", label = "" } = {
-        parent: "",
-        label: "",
-    }) => ({ element, cursor, position, moveCursor, }) => (react_1.default.createElement(Click_1.Click, { selector: selector, element: element, cursor: cursor, position: position, moveCursor: moveCursor, parent: parent, label: label }));
+    (extraProps) => (props) => (react_1.default.createElement(Click_1.Click, Object.assign({}, props, { options: extraProps })));
 Test.wait =
     (milliseconds) => ({ cursor, position, moveCursor, }) => (react_1.default.createElement(Wait_1.Wait, { milliseconds: milliseconds, cursor: cursor, position: position, moveCursor: moveCursor }));
 Test.trigger =

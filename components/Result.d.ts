@@ -1,9 +1,10 @@
 /// <reference types="react" />
-import { TestItemProps } from "./Test";
+import { TestItemExtraProps, TestItemProps } from "./Test";
 export interface ResultProps extends TestItemProps {
-    label: string;
-    expect(): any;
+    expect(elem: HTMLElement): any;
     toEqual?: any;
     toMatch?: RegExp;
+    options?: TestItemExtraProps;
+    assertion: string;
 }
-export declare function Result({ label, expect, toEqual, toMatch, cursor, position, moveCursor, element, }: ResultProps): JSX.Element;
+export declare function Result({ expect, toEqual, toMatch, cursor, position, moveCursor, element, options, assertion, }: ResultProps): JSX.Element;

@@ -26,15 +26,7 @@ declare namespace Test {
         moveCursor(): void;
     }) => JSX.Element;
     var hasText: (text: string | RegExp, extraProps?: TestItemExtraProps | undefined) => (props: TestItemProps) => JSX.Element;
-    var click: (selector?: string, { parent, label }?: {
-        parent?: string;
-        label?: string;
-    }) => ({ element, cursor, position, moveCursor, }: {
-        element: HTMLElement;
-        cursor: number;
-        position: number;
-        moveCursor(): void;
-    }) => JSX.Element;
+    var click: (extraProps?: TestItemExtraProps | undefined) => (props: TestItemProps) => JSX.Element;
     var wait: (milliseconds: number) => ({ cursor, position, moveCursor, }: {
         cursor: number;
         position: number;

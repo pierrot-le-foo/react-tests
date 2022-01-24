@@ -1,11 +1,6 @@
 /// <reference types="react" />
-export interface ClickProps {
-    selector?: string;
-    element: HTMLElement;
-    cursor: number;
-    position: number;
-    moveCursor(): void;
-    parent?: string;
-    label?: string;
+import { TestItemExtraProps, TestItemProps } from "./Test";
+export interface ClickProps extends TestItemProps {
+    options?: TestItemExtraProps;
 }
-export declare function Click({ selector, element, cursor, position, moveCursor, parent, label, }: ClickProps): JSX.Element;
+export declare function Click({ options, element, cursor, position, moveCursor, }: ClickProps): JSX.Element;

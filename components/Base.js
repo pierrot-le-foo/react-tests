@@ -20,10 +20,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-function Base({ cursor, position, options = {}, element, run, moveCursor, type, info, }) {
+function Base({ cursor, position, options = {}, element, run, moveCursor, type, info, delay }) {
     const [state, setState] = (0, react_1.useState)("iddle");
     const [target, setTarget] = (0, react_1.useState)();
-    console.log('Base', { options });
     (0, react_1.useEffect)(() => {
         if (cursor === position && !target) {
             setState("running");
@@ -40,14 +39,17 @@ function Base({ cursor, position, options = {}, element, run, moveCursor, type, 
         }
     }, [cursor, position, options, element]);
     (0, react_1.useEffect)(() => {
-        console.log("!!!!!!!!!!!", state, target);
         if (state === "running" && target) {
             run(target)
                 .then((res) => {
                 if (res) {
                     setState("ok");
-                    console.log("OK");
-                    moveCursor();
+                    if (delay) {
+                        setTimeout(moveCursor, delay);
+                    }
+                    else {
+                        moveCursor();
+                    }
                 }
                 else {
                     setState("failed");
@@ -64,6 +66,6 @@ function Base({ cursor, position, options = {}, element, run, moveCursor, type, 
             state === "ok" && (react_1.default.createElement("div", { style: { fontWeight: "bold", color: "green" } }, "\u2714")),
             state === "failed" && (react_1.default.createElement("div", { style: { fontWeight: "bold", color: "red" } }, "\u2716"))),
         react_1.default.createElement("div", null, type),
-        react_1.default.createElement("div", null, info({ state, target }))));
+        react_1.default.createElement("div", null, info && info({ state, target }))));
 }
 exports.default = Base;
