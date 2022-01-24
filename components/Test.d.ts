@@ -32,6 +32,6 @@ declare namespace Test {
         position: number;
         moveCursor(): void;
     }) => JSX.Element;
-    var trigger: (eventName: string, event: React.SyntheticEvent<Element, Event>, extraProps?: TestItemExtraProps | undefined) => (props: TestItemProps) => JSX.Element;
+    var trigger: <T extends Element = Element>(eventName: string, event: React.SyntheticEvent<T, Event>, extraProps?: TestItemExtraProps | undefined) => (props: TestItemProps) => JSX.Element;
 }
 export default Test;

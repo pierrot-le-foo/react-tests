@@ -81,7 +81,7 @@ export default function Test({
     setReady(Boolean(ref.current.firstChild));
     setElement(ref.current.firstChild);
     if (autoStart) {
-      console.log('GO')
+      console.log("GO");
       setCursor(0);
     }
   }, [ref]);
@@ -89,7 +89,9 @@ export default function Test({
   const [mounted] = useState(<Component {...props} />);
 
   useEffect(() => {
-    console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold", {autoStart});
+    console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold", {
+      autoStart,
+    });
   }, []);
 
   return (
@@ -193,17 +195,8 @@ Test.hasText =
   (props: TestItemProps) =>
     <HasText text={text} {...props} options={extraProps} />;
 
-Test.click =
-  (
-    extraProps?: TestItemExtraProps
-  ) =>
-  (props: TestItemProps) =>
-    (
-      <Click
-        {...props}
-        options={extraProps}
-      />
-    );
+Test.click = (extraProps?: TestItemExtraProps) => (props: TestItemProps) =>
+  <Click {...props} options={extraProps} />;
 
 Test.wait =
   (milliseconds: number) =>
@@ -225,17 +218,22 @@ Test.wait =
       />
     );
 
-Test.trigger =
-  (eventName: string, event: SyntheticEvent, extraProps?: TestItemExtraProps) =>
-  (props: TestItemProps) =>
-    (
-      <Trigger
-        {...props}
-        eventName={eventName}
-        event={event}
-        options={extraProps}
-      />
-    );
+function trigger<T extends Element = Element>(
+  eventName: string,
+  event: SyntheticEvent<T>,
+  extraProps?: TestItemExtraProps
+) {
+  return (props: TestItemProps) => (
+    <Trigger<T>
+      {...props}
+      eventName={eventName}
+      event={event}
+      options={extraProps}
+    />
+  );
+}
+
+Test.trigger = trigger;
 
 // Test.select = (selector = "") => {
 //   const select = {

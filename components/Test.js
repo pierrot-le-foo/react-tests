@@ -52,13 +52,15 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
         setReady(Boolean(ref.current.firstChild));
         setElement(ref.current.firstChild);
         if (autoStart) {
-            console.log('GO');
+            console.log("GO");
             setCursor(0);
         }
     }, [ref]);
     const [mounted] = (0, react_1.useState)(react_1.default.createElement(Component, Object.assign({}, props)));
     (0, react_1.useEffect)(() => {
-        console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold", { autoStart });
+        console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold", {
+            autoStart,
+        });
     }, []);
     return (react_1.default.createElement("div", { style: {
             backgroundColor: "#333",
@@ -96,12 +98,13 @@ Test.hasType =
     (type) => ({ element, cursor, position, moveCursor, }) => (react_1.default.createElement(HasType_1.HasType, { type: type, element: element, cursor: cursor, position: position, moveCursor: moveCursor }));
 Test.hasText =
     (text, extraProps) => (props) => react_1.default.createElement(HasText_1.HasText, Object.assign({ text: text }, props, { options: extraProps }));
-Test.click =
-    (extraProps) => (props) => (react_1.default.createElement(Click_1.Click, Object.assign({}, props, { options: extraProps })));
+Test.click = (extraProps) => (props) => react_1.default.createElement(Click_1.Click, Object.assign({}, props, { options: extraProps }));
 Test.wait =
     (milliseconds) => ({ cursor, position, moveCursor, }) => (react_1.default.createElement(Wait_1.Wait, { milliseconds: milliseconds, cursor: cursor, position: position, moveCursor: moveCursor }));
-Test.trigger =
-    (eventName, event, extraProps) => (props) => (react_1.default.createElement(Trigger_1.Trigger, Object.assign({}, props, { eventName: eventName, event: event, options: extraProps })));
+function trigger(eventName, event, extraProps) {
+    return (props) => (react_1.default.createElement(Trigger_1.Trigger, Object.assign({}, props, { eventName: eventName, event: event, options: extraProps })));
+}
+Test.trigger = trigger;
 // Test.select = (selector = "") => {
 //   const select = {
 //     hasText(text = "") {
