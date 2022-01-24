@@ -33,9 +33,19 @@ export default function Base({
     if (cursor === position && !target) {
       setState("running");
 
-      let elem: HTMLElement;
+      let elem: HTMLElement | null = null;
 
-      if ("target" in options) {
+      if ("root" in options) {
+        const root = window.document.querySelector(options.root as string) as HTMLHtmlElement
+
+        if (root) {
+          if ("target" in options) {
+            elem = root.querySelector(options.target as string) as HTMLElement;
+          } else {
+            elem = root;
+          }
+        }
+      } else if ("target" in options) {
         elem = element.querySelector(options.target as string) as HTMLElement;
       } else {
         elem = element;

@@ -26,8 +26,19 @@ function Base({ cursor, position, options = {}, element, run, moveCursor, type, 
     (0, react_1.useEffect)(() => {
         if (cursor === position && !target) {
             setState("running");
-            let elem;
-            if ("target" in options) {
+            let elem = null;
+            if ("root" in options) {
+                const root = window.document.querySelector(options.root);
+                if (root) {
+                    if ("target" in options) {
+                        elem = root.querySelector(options.target);
+                    }
+                    else {
+                        elem = root;
+                    }
+                }
+            }
+            else if ("target" in options) {
                 elem = element.querySelector(options.target);
             }
             else {
