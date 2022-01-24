@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { printElement } from "../helpers/printElement";
 import Base from "./Base";
 import { TestItemExtraProps, TestItemProps } from "./Test";
 
@@ -19,11 +20,11 @@ export function Click({
       position={position}
       moveCursor={moveCursor}
       element={element}
-      type="EVENT"
+      type="CLICK"
       options={options}
       delay={350}
       info={() => <div>
-        <div>CLICK</div>
+        <div>{printElement(options.target || element)}</div>
       </div>}
       run={async (elem) => {
         if (elem && typeof elem.scrollIntoView === "function") {
