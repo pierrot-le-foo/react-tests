@@ -33,6 +33,8 @@ export default function Base({
     if (cursor === position && !target) {
       setState("running");
 
+      console.log({element, options})
+
       let elem: HTMLElement | null = null;
 
       if ("root" in options) {
