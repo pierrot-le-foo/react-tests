@@ -18,6 +18,7 @@ export function HasType({ type, element, cursor, position, moveCursor }: HasType
       cursor={cursor}
       position={position}
       moveCursor={moveCursor}
+      element={element}
     />
   );
 }

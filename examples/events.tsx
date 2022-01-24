@@ -26,12 +26,16 @@ export default function TestWelcome({ autoStart = false }) {
       autoStart={autoStart}
       Component={Welcome}
       tests={[
-        Test.select("select").trigger("change", {
-          target: {
-            // @ts-ignore
-            value: "french",
+        Test.trigger(
+          "change",
+          {
+            target: {
+              // @ts-ignore
+              value: "french",
+            },
           },
-        }),
+          { target: "select" }
+        ),
 
         // Test.select("div").hasText("Bonjour"),
       ]}

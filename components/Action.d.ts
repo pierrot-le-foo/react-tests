@@ -1,13 +1,14 @@
 import { SyntheticEvent } from "react";
 import { TestItemExtraProps } from "./Test";
-interface TriggerProps {
+interface ActionProps {
     eventName: string;
-    element: HTMLElement;
+    run(element?: HTMLElement): Promise<boolean>;
     cursor: number;
     position: number;
     moveCursor(): void;
     event: SyntheticEvent;
+    element: HTMLElement;
     options?: TestItemExtraProps;
 }
-export declare function Trigger({ eventName, element, cursor, position, moveCursor, event, options, }: TriggerProps): JSX.Element;
+export default function Action({ eventName, cursor, position, event, element, run, moveCursor, options, }: ActionProps): JSX.Element;
 export {};

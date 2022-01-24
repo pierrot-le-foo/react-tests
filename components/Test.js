@@ -30,6 +30,7 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
     const [element, setElement] = (0, react_1.useState)();
     const [cursor, setCursor] = (0, react_1.useState)(-1);
     const [done, setDone] = (0, react_1.useState)(false);
+    const finalLabel = label || Component.displayName || Component.name || "Testing";
     const moveCursor = (0, react_1.useCallback)(() => {
         if (cursor === 0) {
             console.log("Starting tests");
@@ -57,18 +58,26 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
     }, [ref]);
     const [mounted] = (0, react_1.useState)(react_1.default.createElement(Component, Object.assign({}, props)));
     (0, react_1.useEffect)(() => {
-        console.log(`%cTesting "${label}"`, "color: #369; font-weight: bold");
+        console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold");
     }, []);
-    console.log({ ref });
     return (react_1.default.createElement("div", { style: {
             backgroundColor: "#333",
             // height: '100vh',
         } },
+        react_1.default.createElement("style", null, `
+      .rotate {
+        animation: rotate 1.5s linear infinite; 
+      }
+
+      @keyframes rotate {
+        to{ transform: rotate(360deg); }
+      }
+      `),
         react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
             react_1.default.createElement("div", { ref: ref, style: { flex: 1, backgroundColor: "white" } }, mounted),
             react_1.default.createElement("div", null,
                 react_1.default.createElement("button", { onClick: () => setCursor(0), style: { width: "100%", fontSize: 28 }, disabled: cursor >= 0 && !done }, "Start"),
-                done && react_1.default.createElement("h2", { "data-testid": "react-tests-done" }, "Done"),
+                done && (react_1.default.createElement("h2", { "data-testid": "react-tests-done", style: { color: "white" } }, "Done")),
                 react_1.default.createElement("ul", { style: {
                         overflow: "auto",
                         listStyleType: "none",
@@ -86,7 +95,7 @@ exports.default = Test;
 Test.hasType =
     (type) => ({ element, cursor, position, moveCursor, }) => (react_1.default.createElement(HasType_1.HasType, { type: type, element: element, cursor: cursor, position: position, moveCursor: moveCursor }));
 Test.hasText =
-    (text) => ({ element, cursor, position, moveCursor, }) => (react_1.default.createElement(HasText_1.HasText, { text: text, element: element, cursor: cursor, position: position, moveCursor: moveCursor }));
+    (text, extraProps) => (props) => react_1.default.createElement(HasText_1.HasText, Object.assign({ text: text }, props, { options: extraProps }));
 Test.click =
     (selector = "", { parent = "", label = "" } = {
         parent: "",
@@ -95,31 +104,75 @@ Test.click =
 Test.wait =
     (milliseconds) => ({ cursor, position, moveCursor, }) => (react_1.default.createElement(Wait_1.Wait, { milliseconds: milliseconds, cursor: cursor, position: position, moveCursor: moveCursor }));
 Test.trigger =
-    (eventName, event, selector, { parent = "", label = "" } = { parent: "", label: "" }) => ({ element, cursor, position, moveCursor, }) => (react_1.default.createElement(Trigger_1.Trigger, { event: event, selector: selector, element: element, cursor: cursor, position: position, moveCursor: moveCursor, eventName: eventName, parent: parent, label: label }));
-Test.select = (selector = "") => {
-    const select = {
-        hasText(text = "") {
-            return ({ element, cursor, position, moveCursor, }) => {
-                const elem = element.querySelector(selector);
-                if (!elem) {
-                    return react_1.default.createElement("div", null,
-                        "Not found ",
-                        selector);
-                }
-                return (react_1.default.createElement(HasText_1.HasText, { text: text, element: elem, cursor: cursor, position: position, moveCursor: moveCursor }));
-            };
-        },
-        trigger(eventName, event) {
-            return ({ element, cursor, position, moveCursor, label = "", }) => {
-                const elem = element.querySelector(selector);
-                if (!elem) {
-                    return react_1.default.createElement("div", null,
-                        "Not found ",
-                        selector);
-                }
-                return (react_1.default.createElement(Trigger_1.Trigger, { eventName: eventName, event: event, element: elem, cursor: cursor, position: position, moveCursor: moveCursor, label: "label" }));
-            };
-        },
-    };
-    return select;
-};
+    (eventName, event, extraProps) => (props) => (react_1.default.createElement(Trigger_1.Trigger, Object.assign({}, props, { eventName: eventName, event: event, options: extraProps })));
+// Test.select = (selector = "") => {
+//   const select = {
+//     hasText(text = "") {
+//       return ({
+//         element,
+//         cursor,
+//         position,
+//         moveCursor,
+//       }: {
+//         element: HTMLElement;
+//         cursor: number;
+//         position: number;
+//         moveCursor(): void;
+//       }) => {
+//         return (
+//           <WaitForElement element={element} selector={selector}>
+//             {({ element: elem }) => (
+//               <HasText
+//                 text={text}
+//                 element={elem}
+//                 cursor={cursor}
+//                 position={position}
+//                 moveCursor={moveCursor}
+//               />
+//             )}
+//           </WaitForElement>
+//         );
+//       };
+//     },
+//     trigger(eventName: string, event: SyntheticEvent) {
+//       return ({
+//         element,
+//         cursor,
+//         position,
+//         moveCursor,
+//         label = "",
+//       }: {
+//         element: HTMLElement;
+//         cursor: number;
+//         position: number;
+//         moveCursor(): void;
+//         label?: string;
+//       }) => {
+//         const [updates, setUpdates] = useState(0);
+//         const update = useCallback(() => setUpdates(updates + 1), [updates]);
+//         const elem = element.querySelector(selector) as HTMLElement;
+//         useEffect(() => {
+//           if (!elem && updates < 25) {
+//             console.log("elem not found", selector, element);
+//             setTimeout(update, 250);
+//           }
+//         }, [elem, updates]);
+//         if (!elem) {
+//           return <div>Not found {selector}</div>;
+//         }
+//         return (
+//           <Trigger
+//             eventName={eventName}
+//             event={event}
+//             element={elem}
+//             cursor={cursor}
+//             position={position}
+//             moveCursor={moveCursor}
+//             label="label"
+//           />
+//         );
+//       };
+//     },
+//   };
+//   return select;
+// };

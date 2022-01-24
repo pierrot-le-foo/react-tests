@@ -14,6 +14,6 @@ function HasText({ text, element, cursor, position, moveCursor, }) {
     else {
         props.toEqual = text;
     }
-    return (react_1.default.createElement(Result_1.Result, Object.assign({ label: `HAS TEXT ${text}`, expect: () => element.innerText }, props, { cursor: cursor, position: position, moveCursor: moveCursor })));
+    return (react_1.default.createElement(Result_1.Result, Object.assign({ label: `HAS TEXT ${text}`, expect: () => element.innerText }, props, { cursor: cursor, position: position, moveCursor: moveCursor, element: element })));
 }
 exports.HasText = HasText;

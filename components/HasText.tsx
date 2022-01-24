@@ -1,12 +1,10 @@
 import { Result, ResultProps } from "./Result";
 import React from "react";
+import { TestItemExtraProps, TestItemProps } from "./Test";
 
-interface HasTextProps {
+interface HasTextProps extends TestItemProps {
   text: string | RegExp;
-  element: HTMLElement;
-  cursor: number;
-  position: number;
-  moveCursor(): void;
+  options?: TestItemExtraProps;
 }
 
 export function HasText({
@@ -32,6 +30,7 @@ export function HasText({
       cursor={cursor}
       position={position}
       moveCursor={moveCursor}
+      element={element}
     />
   );
 }

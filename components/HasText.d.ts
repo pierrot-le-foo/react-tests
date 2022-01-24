@@ -1,10 +1,8 @@
 /// <reference types="react" />
-interface HasTextProps {
+import { TestItemExtraProps, TestItemProps } from "./Test";
+interface HasTextProps extends TestItemProps {
     text: string | RegExp;
-    element: HTMLElement;
-    cursor: number;
-    position: number;
-    moveCursor(): void;
+    options?: TestItemExtraProps;
 }
 export declare function HasText({ text, element, cursor, position, moveCursor, }: HasTextProps): JSX.Element;
 export {};

@@ -11,6 +11,7 @@ import { HasText } from "./HasText";
 import { HasType } from "./HasType";
 import { Trigger } from "./Trigger";
 import { Wait } from "./Wait";
+import { WaitForElement } from "./WaitForElement";
 
 interface TestProps {
   Component: ComponentType;
@@ -18,6 +19,19 @@ interface TestProps {
   label?: string;
   tests: any[];
   autoStart?: boolean;
+}
+
+export interface TestItemProps {
+  element: HTMLElement;
+  cursor: number;
+  position: number;
+  moveCursor(): void;
+}
+
+export interface TestItemExtraProps {
+  target?: string;
+  label?: string;
+  root?: string;
 }
 
 export default function Test({
@@ -31,6 +45,9 @@ export default function Test({
   const [element, setElement] = useState();
   const [cursor, setCursor] = useState(-1);
   const [done, setDone] = useState(false);
+
+  const finalLabel =
+    label || Component.displayName || Component.name || "Testing";
 
   const moveCursor = useCallback(() => {
     if (cursor === 0) {
@@ -72,10 +89,8 @@ export default function Test({
   const [mounted] = useState(<Component {...props} />);
 
   useEffect(() => {
-    console.log(`%cTesting "${label}"`, "color: #369; font-weight: bold");
+    console.log(`%cTesting "${finalLabel}"`, "color: #369; font-weight: bold");
   }, []);
-
-  console.log({ ref });
 
   return (
     <div
@@ -84,6 +99,18 @@ export default function Test({
         // height: '100vh',
       }}
     >
+      <style>
+        {`
+      .rotate {
+        animation: rotate 1.5s linear infinite; 
+      }
+
+      @keyframes rotate {
+        to{ transform: rotate(360deg); }
+      }
+      `}
+      </style>
+
       <div style={{ display: "flex", flexDirection: "column" }}>
         <div ref={ref} style={{ flex: 1, backgroundColor: "white" }}>
           {mounted}
@@ -98,7 +125,11 @@ export default function Test({
             Start
           </button>
 
-          {done && <h2 data-testid="react-tests-done">Done</h2>}
+          {done && (
+            <h2 data-testid="react-tests-done" style={{ color: "white" }}>
+              Done
+            </h2>
+          )}
 
           <ul
             style={{
@@ -158,27 +189,9 @@ Test.hasType =
     );
 
 Test.hasText =
-  (text: string | RegExp) =>
-  ({
-    element,
-    cursor,
-    position,
-    moveCursor,
-  }: {
-    element: HTMLElement;
-    cursor: number;
-    position: number;
-    moveCursor(): void;
-  }) =>
-    (
-      <HasText
-        text={text}
-        element={element}
-        cursor={cursor}
-        position={position}
-        moveCursor={moveCursor}
-      />
-    );
+  (text: string | RegExp, extraProps?: TestItemExtraProps) =>
+  (props: TestItemProps) =>
+    <HasText text={text} {...props} options={extraProps} />;
 
 Test.click =
   (
@@ -232,103 +245,92 @@ Test.wait =
     );
 
 Test.trigger =
-  (
-    eventName: string,
-    event: SyntheticEvent,
-    selector?: string,
-    { parent = "", label = "" } = { parent: "", label: "" }
-  ) =>
-  ({
-    element,
-    cursor,
-    position,
-    moveCursor,
-  }: {
-    element: HTMLElement;
-    cursor: number;
-    position: number;
-    moveCursor(): void;
-  }) =>
+  (eventName: string, event: SyntheticEvent, extraProps?: TestItemExtraProps) =>
+  (props: TestItemProps) =>
     (
       <Trigger
-        event={event}
-        selector={selector}
-        element={element}
-        cursor={cursor}
-        position={position}
-        moveCursor={moveCursor}
+        {...props}
         eventName={eventName}
-        parent={parent}
-        label={label}
+        event={event}
+        options={extraProps}
       />
     );
 
-Test.select = (selector = "") => {
-  const select = {
-    hasText(text = "") {
-      return ({
-        element,
-        cursor,
-        position,
-        moveCursor,
-      }: {
-        element: HTMLElement;
-        cursor: number;
-        position: number;
-        moveCursor(): void;
-      }) => {
-        const elem = element.querySelector(selector) as HTMLElement;
+// Test.select = (selector = "") => {
+//   const select = {
+//     hasText(text = "") {
+//       return ({
+//         element,
+//         cursor,
+//         position,
+//         moveCursor,
+//       }: {
+//         element: HTMLElement;
+//         cursor: number;
+//         position: number;
+//         moveCursor(): void;
+//       }) => {
+//         return (
+//           <WaitForElement element={element} selector={selector}>
+//             {({ element: elem }) => (
+//               <HasText
+//                 text={text}
+//                 element={elem}
+//                 cursor={cursor}
+//                 position={position}
+//                 moveCursor={moveCursor}
+//               />
+//             )}
+//           </WaitForElement>
+//         );
+//       };
+//     },
 
-        if (!elem) {
-          return <div>Not found {selector}</div>;
-        }
+//     trigger(eventName: string, event: SyntheticEvent) {
+//       return ({
+//         element,
+//         cursor,
+//         position,
+//         moveCursor,
+//         label = "",
+//       }: {
+//         element: HTMLElement;
+//         cursor: number;
+//         position: number;
+//         moveCursor(): void;
+//         label?: string;
+//       }) => {
+//         const [updates, setUpdates] = useState(0);
 
-        return (
-          <HasText
-            text={text}
-            element={elem}
-            cursor={cursor}
-            position={position}
-            moveCursor={moveCursor}
-          />
-        );
-      };
-    },
+//         const update = useCallback(() => setUpdates(updates + 1), [updates]);
 
-    trigger(eventName: string, event: SyntheticEvent) {
-      return ({
-        element,
-        cursor,
-        position,
-        moveCursor,
-        label = "",
-      }: {
-        element: HTMLElement;
-        cursor: number;
-        position: number;
-        moveCursor(): void;
-        label?: string;
-      }) => {
-        const elem = element.querySelector(selector) as HTMLElement;
+//         const elem = element.querySelector(selector) as HTMLElement;
 
-        if (!elem) {
-          return <div>Not found {selector}</div>;
-        }
+//         useEffect(() => {
+//           if (!elem && updates < 25) {
+//             console.log("elem not found", selector, element);
+//             setTimeout(update, 250);
+//           }
+//         }, [elem, updates]);
 
-        return (
-          <Trigger
-            eventName={eventName}
-            event={event}
-            element={elem}
-            cursor={cursor}
-            position={position}
-            moveCursor={moveCursor}
-            label="label"
-          />
-        );
-      };
-    },
-  };
+//         if (!elem) {
+//           return <div>Not found {selector}</div>;
+//         }
 
-  return select;
-};
+//         return (
+//           <Trigger
+//             eventName={eventName}
+//             event={event}
+//             element={elem}
+//             cursor={cursor}
+//             position={position}
+//             moveCursor={moveCursor}
+//             label="label"
+//           />
+//         );
+//       };
+//     },
+//   };
+
+//   return select;
+// };

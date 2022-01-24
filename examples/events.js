@@ -35,12 +35,12 @@ function Welcome() {
 }
 function TestWelcome({ autoStart = false }) {
     return (react_1.default.createElement(Test_1.default, { autoStart: autoStart, Component: Welcome, tests: [
-            Test_1.default.select("select").trigger("change", {
+            Test_1.default.trigger("change", {
                 target: {
                     // @ts-ignore
                     value: "french",
                 },
-            }),
+            }, { target: "select" }),
             // Test.select("div").hasText("Bonjour"),
         ] }));
 }
