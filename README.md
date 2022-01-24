@@ -17,7 +17,13 @@ function TestCounter({ autoStart = false }) {
   return (
     <Test
       Component={Counter}
-      tests={[Test.hasText("0"), Test.click(), Test.hasText("1")]}
+      tests={[
+        // Button text should be 0
+        Test.hasText("0"),
+        // Click button
+        Test.click(),
+        // Button text should now have incremented by one
+        Test.hasText("1")]}
       autoStart={autoStart}
     />
   );

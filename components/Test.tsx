@@ -33,6 +33,10 @@ export default function Test({
   const [done, setDone] = useState(false);
 
   const moveCursor = useCallback(() => {
+    if (cursor === 0) {
+      console.log("Starting tests");
+    }
+
     const nextCursor = cursor + 1;
 
     const nextTest = tests[nextCursor];
@@ -57,6 +61,7 @@ export default function Test({
   const refresh = () => setElement(ref.current.firstChild);
 
   useEffect(() => {
+    console.log(1);
     setReady(Boolean(ref.current.firstChild));
     setElement(ref.current.firstChild);
     if (autoStart) {
@@ -69,6 +74,8 @@ export default function Test({
   useEffect(() => {
     console.log(`%cTesting "${label}"`, "color: #369; font-weight: bold");
   }, []);
+
+  console.log({ ref });
 
   return (
     <div
@@ -257,7 +264,7 @@ Test.trigger =
     );
 
 Test.select = (selector = "") => {
-  return {
+  const select = {
     hasText(text = "") {
       return ({
         element,
@@ -287,5 +294,41 @@ Test.select = (selector = "") => {
         );
       };
     },
+
+    trigger(eventName: string, event: SyntheticEvent) {
+      return ({
+        element,
+        cursor,
+        position,
+        moveCursor,
+        label = "",
+      }: {
+        element: HTMLElement;
+        cursor: number;
+        position: number;
+        moveCursor(): void;
+        label?: string;
+      }) => {
+        const elem = element.querySelector(selector) as HTMLElement;
+
+        if (!elem) {
+          return <div>Not found {selector}</div>;
+        }
+
+        return (
+          <Trigger
+            eventName={eventName}
+            event={event}
+            element={elem}
+            cursor={cursor}
+            position={position}
+            moveCursor={moveCursor}
+            label="label"
+          />
+        );
+      };
+    },
   };
+
+  return select;
 };

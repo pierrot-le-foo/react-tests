@@ -8,7 +8,7 @@ interface TriggerProps {
   position: number;
   moveCursor(): void;
   event: SyntheticEvent;
-  label: string;
+  label?: string;
   parent?: string
 }
 

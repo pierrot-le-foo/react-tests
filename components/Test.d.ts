@@ -50,6 +50,13 @@ declare namespace Test {
             position: number;
             moveCursor(): void;
         }) => JSX.Element;
+        trigger(eventName: string, event: React.SyntheticEvent<Element, Event>): ({ element, cursor, position, moveCursor, label, }: {
+            element: HTMLElement;
+            cursor: number;
+            position: number;
+            moveCursor(): void;
+            label?: string | undefined;
+        }) => JSX.Element;
     };
 }
 export default Test;

@@ -7,7 +7,7 @@ interface TriggerProps {
     position: number;
     moveCursor(): void;
     event: SyntheticEvent;
-    label: string;
+    label?: string;
     parent?: string;
 }
 export declare function Trigger({ eventName, selector, element, cursor, position, moveCursor, event, parent, label, }: TriggerProps): JSX.Element;

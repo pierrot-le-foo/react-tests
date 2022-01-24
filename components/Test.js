@@ -31,6 +31,9 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
     const [cursor, setCursor] = (0, react_1.useState)(-1);
     const [done, setDone] = (0, react_1.useState)(false);
     const moveCursor = (0, react_1.useCallback)(() => {
+        if (cursor === 0) {
+            console.log("Starting tests");
+        }
         const nextCursor = cursor + 1;
         const nextTest = tests[nextCursor];
         if (nextTest) {
@@ -45,6 +48,7 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
     const ref = (0, react_1.useRef)();
     const refresh = () => setElement(ref.current.firstChild);
     (0, react_1.useEffect)(() => {
+        console.log(1);
         setReady(Boolean(ref.current.firstChild));
         setElement(ref.current.firstChild);
         if (autoStart) {
@@ -55,6 +59,7 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
     (0, react_1.useEffect)(() => {
         console.log(`%cTesting "${label}"`, "color: #369; font-weight: bold");
     }, []);
+    console.log({ ref });
     return (react_1.default.createElement("div", { style: {
             backgroundColor: "#333",
             // height: '100vh',
@@ -92,7 +97,7 @@ Test.wait =
 Test.trigger =
     (eventName, event, selector, { parent = "", label = "" } = { parent: "", label: "" }) => ({ element, cursor, position, moveCursor, }) => (react_1.default.createElement(Trigger_1.Trigger, { event: event, selector: selector, element: element, cursor: cursor, position: position, moveCursor: moveCursor, eventName: eventName, parent: parent, label: label }));
 Test.select = (selector = "") => {
-    return {
+    const select = {
         hasText(text = "") {
             return ({ element, cursor, position, moveCursor, }) => {
                 const elem = element.querySelector(selector);
@@ -104,5 +109,17 @@ Test.select = (selector = "") => {
                 return (react_1.default.createElement(HasText_1.HasText, { text: text, element: elem, cursor: cursor, position: position, moveCursor: moveCursor }));
             };
         },
+        trigger(eventName, event) {
+            return ({ element, cursor, position, moveCursor, label = "", }) => {
+                const elem = element.querySelector(selector);
+                if (!elem) {
+                    return react_1.default.createElement("div", null,
+                        "Not found ",
+                        selector);
+                }
+                return (react_1.default.createElement(Trigger_1.Trigger, { eventName: eventName, event: event, element: elem, cursor: cursor, position: position, moveCursor: moveCursor, label: "label" }));
+            };
+        },
     };
+    return select;
 };
