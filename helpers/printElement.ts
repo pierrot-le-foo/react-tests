@@ -1,9 +1,9 @@
 export function printElement(element: string | HTMLElement) {
-  let elemString;
-
   if (typeof element === "string") {
     return `$('${element}')`;
   }
+
+  let elemString;
 
   elemString = `<${element.tagName.toLowerCase()}`;
 

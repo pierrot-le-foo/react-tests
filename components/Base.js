@@ -20,7 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-function Base({ cursor, position, options = {}, element, run, moveCursor, type, info, delay }) {
+function Base({ cursor, position, options = {}, element, run, moveCursor, type, info, delay, }) {
     const [state, setState] = (0, react_1.useState)("iddle");
     const [target, setTarget] = (0, react_1.useState)();
     (0, react_1.useEffect)(() => {
@@ -78,6 +78,6 @@ function Base({ cursor, position, options = {}, element, run, moveCursor, type, 
             state === "ok" && (react_1.default.createElement("div", { style: { fontWeight: "bold", color: "green" } }, "\u2714")),
             state === "failed" && (react_1.default.createElement("div", { style: { fontWeight: "bold", color: "red" } }, "\u2716"))),
         react_1.default.createElement("div", null, type),
-        react_1.default.createElement("div", null, info && info({ state, target }))));
+        react_1.default.createElement("div", null, typeof info === "function" && info({ state, target }))));
 }
 exports.default = Base;

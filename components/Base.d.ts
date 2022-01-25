@@ -15,5 +15,5 @@ interface BaseProps {
     }): ReactNode;
     delay?: number;
 }
-export default function Base({ cursor, position, options, element, run, moveCursor, type, info, delay }: BaseProps): JSX.Element;
+export default function Base({ cursor, position, options, element, run, moveCursor, type, info, delay, }: BaseProps): JSX.Element;
 export {};

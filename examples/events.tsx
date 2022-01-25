@@ -14,8 +14,9 @@ function Welcome() {
         <option value="spanish">Spanish</option>
       </select>
 
-      {language === "french" && <div>Bonjour</div>}
-      {language === "spanish" && <div>Spanish</div>}
+      {language === "french" && <h4>Bonjour</h4>}
+      {language === "spanish" && <h4>Hola</h4>}
+      {language === "" && <h4>Please select language</h4>}
     </>
   );
 }
@@ -30,6 +31,8 @@ export default function TestWelcome({ autoStart = false }) {
         </main>
       )}
       tests={[
+        Test.hasText("Please select language", { target: "h4" }),
+
         Test.trigger(
           "change",
           {
@@ -41,7 +44,7 @@ export default function TestWelcome({ autoStart = false }) {
           { target: "select" }
         ),
 
-        Test.hasText("Bonjour", { target: "div" }),
+        Test.hasText("Bonjour", { target: "h4" }),
       ]}
     />
   );

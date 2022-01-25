@@ -30,19 +30,21 @@ function Welcome() {
         react_1.default.createElement("select", { value: language, onChange: (e) => setLanguage(e.target.value) },
             react_1.default.createElement("option", { value: "french" }, "French"),
             react_1.default.createElement("option", { value: "spanish" }, "Spanish")),
-        language === "french" && react_1.default.createElement("div", null, "Bonjour"),
-        language === "spanish" && react_1.default.createElement("div", null, "Spanish")));
+        language === "french" && react_1.default.createElement("h4", null, "Bonjour"),
+        language === "spanish" && react_1.default.createElement("h4", null, "Hola"),
+        language === "" && react_1.default.createElement("h4", null, "Please select language")));
 }
 function TestWelcome({ autoStart = false }) {
     return (react_1.default.createElement(Test_1.default, { autoStart: autoStart, Component: () => (react_1.default.createElement("main", null,
             react_1.default.createElement(Welcome, null))), tests: [
+            Test_1.default.hasText("Please select language", { target: "h4" }),
             Test_1.default.trigger("change", {
                 target: {
                     // @ts-ignore
                     value: "french",
                 },
             }, { target: "select" }),
-            Test_1.default.hasText("Bonjour", { target: "div" }),
+            Test_1.default.hasText("Bonjour", { target: "h4" }),
         ] }));
 }
 exports.default = TestWelcome;
