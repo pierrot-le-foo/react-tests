@@ -6,12 +6,7 @@ function printElement(element) {
         return `$('${element}')`;
     }
     let elemString;
-    elemString = `<${element.tagName.toLowerCase()}`;
-    const { attributes } = element;
-    for (const attr of attributes) {
-        elemString += ` ${attr}`;
-    }
-    elemString += "/>";
+    elemString = `<${element.tagName.toLowerCase()} />`;
     return elemString;
 }
 exports.printElement = printElement;
