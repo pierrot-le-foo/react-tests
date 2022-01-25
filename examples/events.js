@@ -28,6 +28,7 @@ function Welcome() {
     const [language, setLanguage] = (0, react_1.useState)("");
     return (react_1.default.createElement(react_1.default.Fragment, null,
         react_1.default.createElement("select", { value: language, onChange: (e) => setLanguage(e.target.value) },
+            react_1.default.createElement("option", { value: "" }),
             react_1.default.createElement("option", { value: "french" }, "French"),
             react_1.default.createElement("option", { value: "spanish" }, "Spanish")),
         language === "french" && react_1.default.createElement("h4", null, "Bonjour"),

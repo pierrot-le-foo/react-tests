@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import Test from "../components/Test";
 
+type Language = 'french' | 'spanish'
+
 function Welcome() {
-  const [language, setLanguage] = useState<"french" | "spanish" | "">("");
+  const [language, setLanguage] = useState<Language | "">("");
 
   return (
     <>
       <select
         value={language as string}
-        onChange={(e) => setLanguage(e.target.value as "french" | "spanish")}
+        onChange={(e) => setLanguage(e.target.value as Language)}
       >
+        <option value=""></option>
         <option value="french">French</option>
         <option value="spanish">Spanish</option>
       </select>
