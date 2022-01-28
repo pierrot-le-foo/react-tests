@@ -86,6 +86,7 @@ export default function Base({
   return (
     <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
       <div>
+        {state === 'iddle' && <div>🗨️</div>}
         {state === "running" && <div className="rotate">⧖</div>}
         {state === "ok" && (
           <div style={{ fontWeight: "bold", color: "green" }}>✔</div>

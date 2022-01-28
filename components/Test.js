@@ -25,6 +25,7 @@ const HasText_1 = require("./HasText");
 const HasType_1 = require("./HasType");
 const Trigger_1 = require("./Trigger");
 const Wait_1 = require("./Wait");
+const orientations = ["column", "row", "column-reverse", "row-reverse"];
 function Test({ tests, Component, props = {}, label = "", autoStart = false, }) {
     const [ready, setReady] = (0, react_1.useState)(false);
     const [element, setElement] = (0, react_1.useState)();
@@ -62,6 +63,14 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
             autoStart,
         });
     }, []);
+    const [orientation, setOrientation] = (0, react_1.useState)(0);
+    const toggleOrientation = (0, react_1.useCallback)(() => {
+        let nextOrientation = orientation + 1;
+        if (!orientations[nextOrientation]) {
+            nextOrientation = 0;
+        }
+        setOrientation(nextOrientation);
+    }, [orientation]);
     return (react_1.default.createElement("div", { style: {
             backgroundColor: "#333",
             // height: '100vh',
@@ -75,10 +84,15 @@ function Test({ tests, Component, props = {}, label = "", autoStart = false, }) 
         to{ transform: rotate(360deg); }
       }
       `),
-        react_1.default.createElement("div", { style: { display: "flex", flexDirection: "column" } },
+        react_1.default.createElement("div", null,
+            react_1.default.createElement("button", { onClick: () => setCursor(0), disabled: cursor >= 0 && !done, style: { fontSize: 42 } }, "\uD83D\uDE80"),
+            react_1.default.createElement("button", { onClick: toggleOrientation, style: { fontSize: 34 } }, "\u2935")),
+        react_1.default.createElement("div", { style: {
+                display: "flex",
+                flexDirection: orientations[orientation],
+            } },
             react_1.default.createElement("div", { ref: ref, style: { flex: 1, backgroundColor: "white" } }, mounted),
-            react_1.default.createElement("div", null,
-                react_1.default.createElement("button", { onClick: () => setCursor(0), style: { width: "100%", fontSize: 28 }, disabled: cursor >= 0 && !done }, "Start"),
+            react_1.default.createElement("div", { style: { flex: 1 } },
                 done && (react_1.default.createElement("h2", { "data-testid": "react-tests-done", style: { color: "white" } }, "Done")),
                 react_1.default.createElement("ul", { style: {
                         overflow: "auto",

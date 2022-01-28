@@ -34,6 +34,8 @@ export interface TestItemExtraProps {
   root?: string;
 }
 
+const orientations = ["column", "row", "column-reverse", "row-reverse"];
+
 export default function Test({
   tests,
   Component,
@@ -94,6 +96,16 @@ export default function Test({
     });
   }, []);
 
+  const [orientation, setOrientation] = useState(0);
+
+  const toggleOrientation = useCallback(() => {
+    let nextOrientation = orientation + 1;
+    if (!orientations[nextOrientation]) {
+      nextOrientation = 0;
+    }
+    setOrientation(nextOrientation);
+  }, [orientation]);
+
   return (
     <div
       style={{
@@ -113,20 +125,30 @@ export default function Test({
       `}
       </style>
 
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div>
+        <button
+          onClick={() => setCursor(0)}
+          disabled={cursor >= 0 && !done}
+          style={{ fontSize: 42 }}
+        >
+          🚀
+        </button>
+        <button onClick={toggleOrientation} style={{ fontSize: 34 }}>
+          ⤵
+        </button>
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: orientations[orientation] as any,
+        }}
+      >
         <div ref={ref} style={{ flex: 1, backgroundColor: "white" }}>
           {mounted}
         </div>
 
-        <div>
-          <button
-            onClick={() => setCursor(0)}
-            style={{ width: "100%", fontSize: 28 }}
-            disabled={cursor >= 0 && !done}
-          >
-            Start
-          </button>
-
+        <div style={{ flex: 1 }}>
           {done && (
             <h2 data-testid="react-tests-done" style={{ color: "white" }}>
               Done

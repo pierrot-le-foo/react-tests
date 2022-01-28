@@ -74,6 +74,7 @@ function Base({ cursor, position, options = {}, element, run, moveCursor, type, 
     }, [target, state]);
     return (react_1.default.createElement("div", { style: { display: "flex", gap: 6, alignItems: "center" } },
         react_1.default.createElement("div", null,
+            state === 'iddle' && react_1.default.createElement("div", null, "\uD83D\uDDE8\uFE0F"),
             state === "running" && react_1.default.createElement("div", { className: "rotate" }, "\u29D6"),
             state === "ok" && (react_1.default.createElement("div", { style: { fontWeight: "bold", color: "green" } }, "\u2714")),
             state === "failed" && (react_1.default.createElement("div", { style: { fontWeight: "bold", color: "red" } }, "\u2716"))),
